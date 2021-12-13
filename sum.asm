@@ -30,9 +30,6 @@ segment .bss
 
 precision_num resq 8
 
-
-
-
 segment .text
 
 clock: 
@@ -57,82 +54,16 @@ push r14
 push r15
 pushf 
 
-;get current tics
-mov rax, 0
-call gettime
-mov r12, rax
-
-;print clock time message
-mov rax, 0
-mov rdi, clock_time_message
-mov rsi, r12
-call printf
-
-;prompt for the height in meters
-mov rax, 0
-mov rdi, stringform
-mov rsi, height_prompt
-call printf
-
-;take in height value
-mov rax, 0
-mov      rdi, stringform
-mov      rsi, height
-call     scanf
-
-;convert height to a float
-mov rdi, height
-mov rax, 1
-call atof
-movsd xmm4, xmm0
-
-;put the value of 9.8/2 into xmm5
-mov rax, half_gravity
-movq xmm5, rax
-
-;divide the height by half gravity, then sqrt
-divsd xmm4, xmm5
-sqrtsd xmm4, xmm4
-
-;print time calculation message
-mov qword rax, 0
-movsd xmm0, xmm4
-mov rax, 1
-mov rdi, time_calculation_message
-call printf
-
-;get current tics
-mov rax, 0
-call gettime
-mov r13, rax
-
-;print clock time message
-mov rax, 0
-mov rdi, clock_time_message
-mov rsi, r13
-call printf
-
-;calculate elapsed tics
-sub r13, r12
 
 ;get cpu clock speed
 mov rax, 1
 call clock_speed   
-movsd xmm5, xmm0   
+movsd xmm5, xmm0  
 
-;convert ticks elapsed to float
-cvtsi2sd xmm6, r13
-divsd xmm6, xmm5
-
-;print execution time calculation
-;prompt for the height in meters
+;print cpu speed
 mov rax, 1
-mov rdi, execution_time_message
-mov rsi, r13
-movsd xmm0, xmm6
+mov rdi, clock_speed_message
 call printf
-
-movsd xmm0, xmm6
 
 
 popf
